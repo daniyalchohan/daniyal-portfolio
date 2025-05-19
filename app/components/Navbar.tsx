@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
+import Image from 'next/image'
 
 interface NavbarProps {
   variant?: 'default' | 'mobile'
@@ -48,17 +50,17 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
     <nav className="navbar-wrapper">
       <div className="navbar-container">
         <div className="navbar-left">
-          <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
-            <img src="/profile.png" alt="Profile" className="navbar-profile" />
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
+            <Image src="/profile.png" alt="Profile" className="navbar-profile" width={44} height={44} />
             <span className="navbar-title">Daniyal Ali</span>
-          </a>
+          </Link>
         </div>
         
         {/* Desktop Navigation */}
         <div className="navbar-links">
-          <a href="/" className="nav-link">Home</a>
-          <a href="/work" className="nav-link">Work</a>
-          <a href="/#about" className="nav-link">About</a>
+          <Link href="/" className="nav-link">Home</Link>
+          <Link href="/work" className="nav-link">Work</Link>
+          <Link href="/#about" className="nav-link">About</Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -92,10 +94,10 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           animate={{ opacity: isMobileMenuOpen ? 1 : 0, y: isMobileMenuOpen ? 0 : -20 }}
           transition={{ duration: 0.3 }}
         >
-          <a href="/" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
-          <a href="/work" onClick={() => setIsMobileMenuOpen(false)}>Work</a>
-          <a href="/#about" onClick={() => setIsMobileMenuOpen(false)}>About</a>
-          <a href="/#connect" onClick={() => setIsMobileMenuOpen(false)} className="nav-link">Let's Connect</a>
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} legacyBehavior><a>Home</a></Link>
+          <Link href="/work" onClick={() => setIsMobileMenuOpen(false)} legacyBehavior><a>Work</a></Link>
+          <Link href="/#about" onClick={() => setIsMobileMenuOpen(false)} legacyBehavior><a>About</a></Link>
+          <Link href="/#connect" onClick={() => setIsMobileMenuOpen(false)} className="nav-link" legacyBehavior><a>Let&apos;s Connect</a></Link>
         </motion.div>
       </div>
     </nav>

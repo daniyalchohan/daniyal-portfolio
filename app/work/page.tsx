@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { FaGlobe, FaMobileAlt, FaBuilding, FaRobot } from 'react-icons/fa'
 import Navbar from '../components/Navbar'
+import Image from 'next/image'
 
 interface ProjectType {
   title: string;
@@ -202,7 +203,7 @@ export default function Work() {
         <div className="footer-glow"></div>
         <div className="footer-main-row">
           <div className="footer-profile-col">
-            <img src="/profile.png" alt="Daniyal Ali" className="footer-profile-pic" />
+            <Image src="/profile.png" alt="Daniyal Ali" className="footer-profile-pic" width={48} height={48} />
             <span className="footer-profile-name">Daniyal Ali</span>
           </div>
           <div className="footer-links-col">
@@ -214,7 +215,7 @@ export default function Work() {
               <a href="#contact">Contact</a>
             </div>
             <div className="footer-connect-group">
-              <div className="footer-nav-title">Let's Connect</div>
+              <div className="footer-nav-title">Let&apos;s Connect</div>
               <div className="footer-email-row">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="footer-mail-icon">
                   <path d="M20 4H4C2.89543 4 2 4.89543 2 6V18C2 19.1046 2.89543 20 4 20H20C21.1046 20 22 19.1046 22 18V6C22 4.89543 21.1046 4 20 4Z" stroke="#fff" strokeLinecap="round" strokeLinejoin="round"/>

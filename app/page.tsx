@@ -1,9 +1,11 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Blob3D from './Blob3D'
 import Navbar from './components/Navbar'
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   const [isMounted, setIsMounted] = useState(false)
@@ -11,7 +13,7 @@ export default function Home() {
   const [isDeleting, setIsDeleting] = useState(false)
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0)
   
-  const roles = ["UX Designer", "Product Manager", "UX Engineer"]
+  const roles = useMemo(() => ["UX Designer", "Product Manager", "UX Engineer"], [])
   const projectRowsRef = useRef<(HTMLDivElement | null)[]>([])
   const projectsSectionRef = useRef<HTMLDivElement | null>(null)
 
@@ -85,7 +87,7 @@ export default function Home() {
     }
 
     return () => clearTimeout(timeout)
-  }, [displayText, isDeleting, currentRoleIndex])
+  }, [displayText, isDeleting, currentRoleIndex, roles])
 
   useEffect(() => {
     // Subtle horizontal scroll effect
@@ -180,7 +182,7 @@ export default function Home() {
               <div className="about-tag">About me</div>
               <p className="about-paragraph">
                 Hi There! <br />
-                I'm Daniyal Ali, a passionate product designer with expertise in visual storytelling and a sharp eye for detail. Since 2021, I've honed my skills in crafting designs that balance creativity and precision, mastering design principles while staying adept with the latest tools and trends.
+                I&apos;m Daniyal Ali, a passionate product designer with expertise in visual storytelling and a sharp eye for detail. Since 2021, I&apos;ve honed my skills in crafting designs that balance creativity and precision, mastering design principles while staying adept with the latest tools and trends.
               </p>
             </div>
           </div>
@@ -192,7 +194,7 @@ export default function Home() {
             >
               {[...Array(4)].map((_, imgIdx) => (
                 <div className="project-mockup" key={imgIdx}>
-                  <img src={`https://via.placeholder.com/420x280?text=Project+${rowIdx * 4 + imgIdx + 1}`} alt={`Project ${rowIdx * 4 + imgIdx + 1}`} />
+                  <Image src={`https://via.placeholder.com/420x280?text=Project+${rowIdx * 4 + imgIdx + 1}`} alt={`Project ${rowIdx * 4 + imgIdx + 1}`} width={420} height={280} />
                 </div>
               ))}
             </div>
@@ -214,14 +216,16 @@ export default function Home() {
               { label: 'AI Experience', href: '#ai' },
               { label: 'View All', href: '#all' },
             ].map((link, idx) => (
-              <a key={link.label} href={link.href} className="portfolio-link">
-                <span className="portfolio-link-ticker">
-                  {[...Array(6)].map((_, i) => (
-                    <span key={i}>{link.label}&nbsp;&nbsp;</span>
-                  ))}
-                </span>
-                <span className="portfolio-link-label">{link.label}</span>
-              </a>
+              <Link key={link.label} href={link.href} className="portfolio-link" legacyBehavior>
+                <a>
+                  <span className="portfolio-link-ticker">
+                    {[...Array(6)].map((_, i) => (
+                      <span key={i}>{link.label}&nbsp;&nbsp;</span>
+                    ))}
+                  </span>
+                  <span className="portfolio-link-label">{link.label}</span>
+                </a>
+              </Link>
             ))}
           </div>
         </motion.section>
@@ -247,7 +251,7 @@ export default function Home() {
               <div className="bento-card featured">
                 <div className="bento-card-year">2025</div>
                 <div className="bento-card-title">My Portfolio</div>
-                <img src="/portfolio-mock.png" alt="Portfolio Website" />
+                <Image src="/portfolio-mock.png" alt="Portfolio Website" width={420} height={280} />
                 <div className="bento-card-sub">Currently Viewing</div>
                 <div className="bento-card-links">
                   <a href="#" className="bento-card-link">Live Site</a>
@@ -257,7 +261,7 @@ export default function Home() {
               <div className="bento-card featured">
                 <div className="bento-card-year">2024</div>
                 <div className="bento-card-title">School</div>
-                <img src="/school-mock.png" alt="School Website" />
+                <Image src="/school-mock.png" alt="School Website" width={420} height={280} />
                 <div className="bento-card-sub">School</div>
                 <div className="bento-card-links">
                   <a href="#" className="bento-card-link">Live Site</a>
@@ -267,7 +271,7 @@ export default function Home() {
               <div className="bento-card featured">
                 <div className="bento-card-year">2025</div>
                 <div className="bento-card-title">Blog</div>
-                <img src="/blog-mock.png" alt="Blog Website" />
+                <Image src="/blog-mock.png" alt="Blog Website" width={420} height={280} />
                 <div className="bento-card-sub">Green Earth</div>
                 <div className="bento-card-links">
                   <a href="#" className="bento-card-link">Live Site</a>
@@ -277,7 +281,7 @@ export default function Home() {
               <div className="bento-card featured">
                 <div className="bento-card-year">2024</div>
                 <div className="bento-card-title">Ecommerce</div>
-                <img src="/ecommerce-mock.png" alt="Ecommerce Website" />
+                <Image src="/ecommerce-mock.png" alt="Ecommerce Website" width={420} height={280} />
                 <div className="bento-card-sub">Watches</div>
                 <div className="bento-card-links">
                   <a href="#" className="bento-card-link">Live Site</a>
@@ -288,13 +292,13 @@ export default function Home() {
               <div className="bento-card platform-icons-bento" style={{ gridColumn: '1 / span 2' }}>
                 <div className="platform-icons-row">
                   <div className="icon-section">
-                    <img src="/framer.avif" alt="Framer" />
+                    <Image src="/framer.avif" alt="Framer" width={48} height={48} />
                   </div>
                   <div className="icon-section">
-                    <img src="/webflow.avif" alt="Webflow" />
+                    <Image src="/webflow.avif" alt="Webflow" width={48} height={48} />
                   </div>
                   <div className="icon-section">
-                    <img src="/figma.avif" alt="Figma" />
+                    <Image src="/figma.avif" alt="Figma" width={48} height={48} />
                   </div>
                 </div>
               </div>
@@ -356,7 +360,7 @@ export default function Home() {
               </motion.span>
               <div className="project-section-row">
                 <span className="project-featured-label">Featured Projects</span>
-                <a className="project-all-link" href="#">All Projects <span>&rarr;</span></a>
+                <Link className="project-all-link" href="#" legacyBehavior><a>All Projects <span>&rarr;</span></a></Link>
               </div>
             </div>
             <div className="project-cards-row">
@@ -412,7 +416,7 @@ export default function Home() {
               <div className="service-title">AI Experience</div>
               <ul className="service-list">
                 <li>AI-powered Interfaces</li>
-                <li>Chatbots & Assistants</li>
+                <li>Chatbots &amp; Assistants</li>
                 <li>Automation Tools</li>
                 <li>Prompt Engineering</li>
               </ul>
@@ -422,7 +426,7 @@ export default function Home() {
 
         {/* Let's Connect Section */}
         <section className="connect-section" style={{ position: 'relative', zIndex: 2, minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div className="services-bg-text">LET'S CONNECT</div>
+          <div className="services-bg-text">LET&apos;S CONNECT</div>
           <div className="connect-card-row">
             <div className="connect-card glassy">
               <h2 className="connect-heading">Connect with me</h2>
@@ -471,7 +475,7 @@ export default function Home() {
         </section>
         {/* Back to Top link below Let's Connect, right aligned */}
         <div className="backtotop-row">
-          <a href="#" className="backtotop-link">Back to Top ↑</a>
+          <Link href="#" className="backtotop-link" legacyBehavior><a>Back to Top &uarr;</a></Link>
         </div>
       </main>
 
@@ -480,19 +484,19 @@ export default function Home() {
         <div className="footer-glow"></div>
         <div className="footer-main-row">
           <div className="footer-profile-col">
-            <img src="/profile.png" alt="Daniyal Ali" className="footer-profile-pic" />
+            <Image src="/profile.png" alt="Daniyal Ali" className="footer-profile-pic" width={48} height={48} />
             <span className="footer-profile-name">Daniyal Ali</span>
           </div>
           <div className="footer-links-col">
             <div className="footer-nav-group">
               <div className="footer-nav-title">Navigation</div>
-              <a href="#">Home</a>
-              <a href="#about">About</a>
-              <a href="#work">Work</a>
-              <a href="#contact">Contact</a>
+              <Link href="#" legacyBehavior><a>Home</a></Link>
+              <Link href="#about" legacyBehavior><a>About</a></Link>
+              <Link href="#work" legacyBehavior><a>Work</a></Link>
+              <Link href="#contact" legacyBehavior><a>Contact</a></Link>
             </div>
             <div className="footer-connect-group">
-              <div className="footer-nav-title">Let's Connect</div>
+              <div className="footer-nav-title">Let&apos;s Connect</div>
               <div className="footer-email-row">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="footer-mail-icon">
                   <path d="M20 4H4C2.89543 4 2 4.89543 2 6V18C2 19.1046 2.89543 20 4 20H20C21.1046 20 22 19.1046 22 18V6C22 4.89543 21.1046 4 20 4Z" stroke="#fff" strokeLinecap="round" strokeLinejoin="round"/>
