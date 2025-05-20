@@ -1,14 +1,22 @@
 'use client'
 
 import { useEffect, useState, useRef, useMemo } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion';
+import Link from 'next/link'
+import Image from 'next/image'
+import dynamic from 'next/dynamic'
 import Blob3D from './Blob3D'
 import Navbar from './components/Navbar'
-import Link from 'next/link';
-import Image from 'next/image';
+import { getImagePath } from './utils/imagePath'
+
+// Dynamically import motion components
+const MotionSection = dynamic(() => import('framer-motion').then(mod => mod.motion.section), { ssr: false })
+const MotionDiv = dynamic(() => import('framer-motion').then(mod => mod.motion.div), { ssr: false })
+const MotionSpan = dynamic(() => import('framer-motion').then(mod => mod.motion.span), { ssr: false })
+
+// Import hooks directly since they can't be dynamically imported
+import { useScroll, useTransform } from 'framer-motion'
 
 export default function Home() {
-  const [isMounted, setIsMounted] = useState(false)
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0)
@@ -48,10 +56,6 @@ export default function Home() {
   const connectRef = useRef(null);
   const { scrollYProgress: connectScroll } = useScroll({ target: connectRef, offset: ['start end', 'end start'] });
   const connectY = useTransform(connectScroll, [0, 1], [0, -60]);
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
 
   useEffect(() => {
     const currentRole = roles[currentRoleIndex]
@@ -130,31 +134,27 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  if (!isMounted) {
-    return null
-  }
-
   const connectText = "Let's Connect".split("")
 
   return (
     <>
       <main>
-        {/* Navigation */}
         <Navbar />
-
+        
         {/* Hero Section */}
-        <motion.section className="hero hero-custom"
+        <MotionSection 
+          className="hero hero-custom"
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
           <div className="hero-main-text">
-            <motion.div className="design-tag" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            <MotionDiv className="design-tag" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
               {"Design in Detail".split("").map((char, i) => (
-                <motion.span key={i} variants={staggerItem} style={{ display: 'inline-block' }}>{char === ' ' ? '\u00A0' : char}</motion.span>
+                <MotionSpan key={i} variants={staggerItem} style={{ display: 'inline-block' }}>{char === ' ' ? '\u00A0' : char}</MotionSpan>
               ))}
-            </motion.div>
+            </MotionDiv>
             <div className="hero-digital sora-font">
               Daniyal Ali is a
               <div className="dynamic-role-container">
@@ -166,10 +166,10 @@ export default function Home() {
             <div className="hero-intro">Crafting intuitive digital experiences that bridge human needs with innovative solutions. Specializing in user-centered product design with a focus on clarity and purpose.</div>
             <div className="hero-collab">Open to collaborative opportunities worldwide. Creating meaningful digital products that resonate across cultures, industries, and platforms.</div>
           </div>
-        </motion.section>
+        </MotionSection>
 
         {/* Projects Section */}
-        <motion.section
+        <MotionSection
           className="projects-section"
           ref={projectsSectionRef}
           variants={sectionVariants}
@@ -194,15 +194,20 @@ export default function Home() {
             >
               {[...Array(4)].map((_, imgIdx) => (
                 <div className="project-mockup" key={imgIdx}>
-                  <Image src={`https://via.placeholder.com/420x280?text=Project+${rowIdx * 4 + imgIdx + 1}`} alt={`Project ${rowIdx * 4 + imgIdx + 1}`} width={420} height={280} />
+                  <Image 
+                    src={`https://via.placeholder.com/420x280/1a1a1a/ffffff?text=Project+${rowIdx * 4 + imgIdx + 1}`} 
+                    alt={`Project ${rowIdx * 4 + imgIdx + 1}`} 
+                    width={420} 
+                    height={280} 
+                  />
                 </div>
               ))}
             </div>
           ))}
-        </motion.section>
+        </MotionSection>
 
         {/* Portfolio Links Section */}
-        <motion.section className="portfolio-links-section"
+        <MotionSection className="portfolio-links-section"
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
@@ -216,22 +221,20 @@ export default function Home() {
               { label: 'AI Experience', href: '#ai' },
               { label: 'View All', href: '#all' },
             ].map((link, idx) => (
-              <Link key={link.label} href={link.href} className="portfolio-link" legacyBehavior>
-                <a>
-                  <span className="portfolio-link-ticker">
-                    {[...Array(6)].map((_, i) => (
-                      <span key={i}>{link.label}&nbsp;&nbsp;</span>
-                    ))}
-                  </span>
-                  <span className="portfolio-link-label">{link.label}</span>
-                </a>
+              <Link key={link.label} href={link.href} className="portfolio-link">
+                <span className="portfolio-link-ticker">
+                  {[...Array(6)].map((_, i) => (
+                    <span key={i}>{link.label}&nbsp;&nbsp;</span>
+                  ))}
+                </span>
+                <span className="portfolio-link-label">{link.label}</span>
               </Link>
             ))}
           </div>
-        </motion.section>
+        </MotionSection>
 
         {/* Website Design Section */}
-        <motion.section className="website-design-section no-bg"
+        <MotionSection className="website-design-section no-bg"
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
@@ -251,7 +254,12 @@ export default function Home() {
               <div className="bento-card featured">
                 <div className="bento-card-year">2025</div>
                 <div className="bento-card-title">My Portfolio</div>
-                <Image src="/portfolio-mock.png" alt="Portfolio Website" width={420} height={280} />
+                <Image 
+                  src={`https://via.placeholder.com/420x280/1a1a1a/ffffff?text=Portfolio`} 
+                  alt="Portfolio Website" 
+                  width={420} 
+                  height={280} 
+                />
                 <div className="bento-card-sub">Currently Viewing</div>
                 <div className="bento-card-links">
                   <a href="#" className="bento-card-link">Live Site</a>
@@ -261,7 +269,12 @@ export default function Home() {
               <div className="bento-card featured">
                 <div className="bento-card-year">2024</div>
                 <div className="bento-card-title">School</div>
-                <Image src="/school-mock.png" alt="School Website" width={420} height={280} />
+                <Image 
+                  src={`https://via.placeholder.com/420x280/1a1a1a/ffffff?text=School`} 
+                  alt="School Website" 
+                  width={420} 
+                  height={280} 
+                />
                 <div className="bento-card-sub">School</div>
                 <div className="bento-card-links">
                   <a href="#" className="bento-card-link">Live Site</a>
@@ -271,7 +284,12 @@ export default function Home() {
               <div className="bento-card featured">
                 <div className="bento-card-year">2025</div>
                 <div className="bento-card-title">Blog</div>
-                <Image src="/blog-mock.png" alt="Blog Website" width={420} height={280} />
+                <Image 
+                  src={`https://via.placeholder.com/420x280/1a1a1a/ffffff?text=Blog`} 
+                  alt="Blog Website" 
+                  width={420} 
+                  height={280} 
+                />
                 <div className="bento-card-sub">Green Earth</div>
                 <div className="bento-card-links">
                   <a href="#" className="bento-card-link">Live Site</a>
@@ -281,7 +299,12 @@ export default function Home() {
               <div className="bento-card featured">
                 <div className="bento-card-year">2024</div>
                 <div className="bento-card-title">Ecommerce</div>
-                <Image src="/ecommerce-mock.png" alt="Ecommerce Website" width={420} height={280} />
+                <Image 
+                  src={`https://via.placeholder.com/420x280/1a1a1a/ffffff?text=Ecommerce`} 
+                  alt="Ecommerce Website" 
+                  width={420} 
+                  height={280} 
+                />
                 <div className="bento-card-sub">Watches</div>
                 <div className="bento-card-links">
                   <a href="#" className="bento-card-link">Live Site</a>
@@ -292,13 +315,13 @@ export default function Home() {
               <div className="bento-card platform-icons-bento" style={{ gridColumn: '1 / span 2' }}>
                 <div className="platform-icons-row">
                   <div className="icon-section">
-                    <Image src="/framer.avif" alt="Framer" width={48} height={48} />
+                    <Image src={getImagePath('framer.avif')} alt="Framer" width={48} height={48} />
                   </div>
                   <div className="icon-section">
-                    <Image src="/webflow.avif" alt="Webflow" width={48} height={48} />
+                    <Image src={getImagePath('webflow.avif')} alt="Webflow" width={48} height={48} />
                   </div>
                   <div className="icon-section">
-                    <Image src="/figma.avif" alt="Figma" width={48} height={48} />
+                    <Image src={getImagePath('figma.avif')} alt="Figma" width={48} height={48} />
                   </div>
                 </div>
               </div>
@@ -313,22 +336,22 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </motion.section>
+        </MotionSection>
 
         {/* Projects Tag Section */}
-        <motion.div className="projects-tag-container"
+        <MotionDiv className="projects-tag-container"
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-          <motion.div className="projects-tag gradient-projects-tag" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          <MotionDiv className="projects-tag gradient-projects-tag" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             {"Projects".split("").map((char, i) => (
-              <motion.span key={i} variants={staggerItem} style={{ display: 'inline-block' }}>{char === ' ' ? '\u00A0' : char}</motion.span>
+              <MotionDiv key={i} variants={staggerItem} style={{ display: 'inline-block' }}>{char === ' ' ? '\u00A0' : char}</MotionDiv>
             ))}
-          </motion.div>
+          </MotionDiv>
           <div className="projects-tag-underline"></div>
-        </motion.div>
+        </MotionDiv>
         {/* Headline and description below Projects tag */}
         <div className="projects-headline-section">
           <h2 className="website-design-title" style={{ marginTop: '0.5rem', marginBottom: '1.2rem', textAlign: 'center' }}>
@@ -346,18 +369,18 @@ export default function Home() {
           { title: 'AI Application', id: 'ai-application' },
           { title: 'Brand Guidelines', id: 'brand-guidelines' },
         ].map(section => (
-          <motion.section className="project-section" id={section.id} key={section.id}
+          <MotionSection className="project-section" id={section.id} key={section.id}
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
           >
             <div className="project-section-header">
-              <motion.span className="project-section-title" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              <MotionDiv className="project-section-title" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}>
                 {section.title.split("").map((char, i) => (
-                  <motion.span key={i} variants={staggerItem} style={{ display: 'inline-block' }}>{char === ' ' ? '\u00A0' : char}</motion.span>
+                  <MotionDiv key={i} variants={staggerItem} style={{ display: 'inline-block' }}>{char === ' ' ? '\u00A0' : char}</MotionDiv>
                 ))}
-              </motion.span>
+              </MotionDiv>
               <div className="project-section-row">
                 <span className="project-featured-label">Featured Projects</span>
                 <Link className="project-all-link" href="#" legacyBehavior><a>All Projects <span>&rarr;</span></a></Link>
@@ -371,7 +394,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </motion.section>
+          </MotionSection>
         ))}
 
         {/* Services Section */}
@@ -484,7 +507,7 @@ export default function Home() {
         <div className="footer-glow"></div>
         <div className="footer-main-row">
           <div className="footer-profile-col">
-            <Image src="/profile.png" alt="Daniyal Ali" className="footer-profile-pic" width={48} height={48} />
+            <Image src={getImagePath('profile.png')} alt="Daniyal Ali" className="footer-profile-pic" width={48} height={48} />
             <span className="footer-profile-name">Daniyal Ali</span>
           </div>
           <div className="footer-links-col">

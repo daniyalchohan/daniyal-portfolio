@@ -203,7 +203,7 @@ export default function Work() {
         <div className="footer-glow"></div>
         <div className="footer-main-row">
           <div className="footer-profile-col">
-            <Image src="/profile.png" alt="Daniyal Ali" className="footer-profile-pic" width={48} height={48} />
+            <Image src="/daniyal-portfolio/profile.png" alt="Daniyal Ali" className="footer-profile-pic" width={48} height={48} />
             <span className="footer-profile-name">Daniyal Ali</span>
           </div>
           <div className="footer-links-col">

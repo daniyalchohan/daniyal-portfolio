@@ -600,15 +600,20 @@ html {
 
 /* Website Design Section Styles */
 .website-design-section {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   padding: 4rem 0;
-  background: #000;
+  background: none !important;
   position: relative;
 }
 
 .website-design-content {
-  max-width: 1200px;
+  padding-left: 80px;
+  padding-right: 80px;
+  box-sizing: border-box;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
   text-align: center;
 }
 
@@ -635,20 +640,20 @@ html {
   background: linear-gradient(90deg, transparent, #8B5CF6, transparent);
 }
 
-.website-design-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #F8FAFC;
-}
-
+.website-design-title,
 .website-design-desc {
-  font-size: 1.1rem;
-  color: #94A3B8;
-  margin-bottom: 2rem;
-  max-width: 600px;
+  text-align: center;
   margin-left: auto;
   margin-right: auto;
+}
+
+.featured-case-studies-tag {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
 }
 
 .bento-header-row {
@@ -682,67 +687,77 @@ html {
 
 .bento-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 2rem;
-  margin-bottom: 2rem;
-  padding-top: 0;
-  padding-bottom: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: auto auto;
   grid-template-areas:
-    "w1 w2 w3 w4"
-    "icons icons collab nav";
+    "card1 card2 card3 card4"
+    "icons icons collaborate navigate";
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
-.bento-card.featured:nth-child(1) { grid-area: w1; }
-.bento-card.featured:nth-child(2) { grid-area: w2; }
-.bento-card.featured:nth-child(3) { grid-area: w3; }
-.bento-card.featured:nth-child(4) { grid-area: w4; }
-.platform-icons-bento { grid-area: icons; }
-.bento-card.info.collaborate { grid-area: collab; }
-.bento-card.info.navigation { grid-area: nav; }
 
-@media (max-width: 1023px) {
+.bento-card.card1 { grid-area: card1; }
+.bento-card.card2 { grid-area: card2; }
+.bento-card.card3 { grid-area: card3; }
+.bento-card.card4 { grid-area: card4; }
+.bento-card.icons { grid-area: icons; }
+.bento-card.collaborate { grid-area: collaborate; }
+.bento-card.navigate { grid-area: navigate; }
+
+@media (max-width: 900px) {
   .bento-grid {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(3, auto);
     grid-template-areas:
-      "w1 w2"
-      "w3 w4"
-      "icons icons";
+      "card1 card2"
+      "card3 card4"
+      "icons icons"
+      "collaborate navigate";
   }
-  .bento-card.featured:nth-child(1) { grid-area: w1; }
-  .bento-card.featured:nth-child(2) { grid-area: w2; }
-  .bento-card.featured:nth-child(3) { grid-area: w3; }
-  .bento-card.featured:nth-child(4) { grid-area: w4; }
-  .platform-icons-bento { grid-area: icons; }
-  .bento-card.info.collaborate,
-  .bento-card.info.navigation {
-    display: none !important;
+}
+@media (max-width: 600px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "card1"
+      "card2"
+      "card3"
+      "card4"
+      "icons"
+      "collaborate"
+      "navigate";
   }
 }
 
 .bento-card {
-  background: none !important;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  background: none;
   border: 1.5px solid #26262c;
   border-radius: 16px;
   box-shadow: none;
   padding: 1.5rem;
-  transition: border-color 0.3s cubic-bezier(0.4,0,0.2,1), background 0.3s cubic-bezier(0.4,0,0.2,1);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  position: relative;
   min-height: 320px;
+  transition: border-color 0.3s, background 0.3s;
 }
+
+.bento-card img {
+  border-radius: 12px;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
 .bento-card:hover {
   border-color: #a78bfa;
   background: #18181f;
 }
-.bento-card img {
-  border-radius: 12px;
-  width: 100%;
-  object-fit: cover;
-  margin-bottom: 1rem;
-}
+
 .bento-card-year {
   color: #a1a1aa;
   font-size: 0.95rem;
@@ -1090,6 +1105,7 @@ html {
   letter-spacing: -0.01em;
   transition: color 0.2s;
   line-height: 1.1;
+  cursor: pointer;
 }
 .portfolio-link-ticker {
   position: absolute;
