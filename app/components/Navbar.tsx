@@ -1,9 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { getImagePath } from '../utils/imagePath'
+import dynamic from 'next/dynamic'
+
+// Dynamically import motion components
+const MotionA = dynamic(() => import('framer-motion').then(mod => mod.motion.a), { ssr: false })
+const MotionDiv = dynamic(() => import('framer-motion').then(mod => mod.motion.div), { ssr: false })
+const MotionSpan = dynamic(() => import('framer-motion').then(mod => mod.motion.span), { ssr: false })
 
 interface NavbarProps {
   variant?: 'default' | 'mobile'
@@ -30,17 +36,8 @@ const letterVariants = {
 }
 
 export default function Navbar({ variant = 'default' }: NavbarProps) {
-  const [isMounted, setIsMounted] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const connectText = "Let's Connect".split("")
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  if (!isMounted) {
-    return null
-  }
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -51,7 +48,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
       <div className="navbar-container">
         <div className="navbar-left">
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
-            <Image src="/profile.png" alt="Profile" className="navbar-profile" width={44} height={44} />
+            <Image src={getImagePath('profile.png')} alt="Profile" className="navbar-profile" width={44} height={44} />
             <span className="navbar-title">Daniyal Ali</span>
           </Link>
         </div>
@@ -73,7 +70,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
         </button>
 
         {/* Connect Button with stagger hover effect */}
-        <motion.a
+        <MotionA
           href="/#connect"
           className="connect-btn"
           variants={containerVariants}
@@ -81,14 +78,14 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           whileHover="hover"
         >
           {connectText.map((char, i) => (
-            <motion.span key={i} variants={letterVariants}>
+            <MotionSpan key={i} variants={letterVariants}>
               {char === ' ' ? '\u00A0' : char}
-            </motion.span>
+            </MotionSpan>
           ))}
-        </motion.a>
+        </MotionA>
 
         {/* Mobile Menu */}
-        <motion.div 
+        <MotionDiv 
           className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: isMobileMenuOpen ? 1 : 0, y: isMobileMenuOpen ? 0 : -20 }}
@@ -98,7 +95,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           <Link href="/work" onClick={() => setIsMobileMenuOpen(false)} legacyBehavior><a>Work</a></Link>
           <Link href="/#about" onClick={() => setIsMobileMenuOpen(false)} legacyBehavior><a>About</a></Link>
           <Link href="/#connect" onClick={() => setIsMobileMenuOpen(false)} className="nav-link" legacyBehavior><a>Let&apos;s Connect</a></Link>
-        </motion.div>
+        </MotionDiv>
       </div>
     </nav>
   )
